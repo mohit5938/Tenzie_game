@@ -1,14 +1,20 @@
-import { useState ,useEffect} from "react"
+import { useState ,useEffect,useRef} from "react"
 import Confetti from "react-confetti"
 import Die from "./Die"
 import {nanoid} from "nanoid"
 export default function App(){
   const [dice,setDice] = useState( () =>generateNewDice())
-
+  const buttonref = useRef(null);
 
   const gamewon = dice.every(die => die.isHeld) &&
  dice.every(die=>die.value === dice[0].value)
  
+ useEffect(()=>{
+  if(gamewon){
+    buttonref.current.focus();
+  }
+
+ },[gamewon])
 
   function generateNewDice(){
     // const newDice =[];
@@ -76,6 +82,7 @@ export default function App(){
 {diceElement}
   </div>
   <button
+  ref={buttonref}
   className="rollbtn"
   onClick={rolldice}>{gamewon ? "New Game": "roll_it"}</button>
    </div>
